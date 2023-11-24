@@ -42,8 +42,10 @@ public class Metodos {
         }
 
     }
+    
+    
 
-    public boolean buscarNombre(String nombre) throws SQLException {
+    public boolean buscaNombre(String nombre) throws SQLException {
         String QUERY = "SELECT * FROM  videojuegos where nombre = '" + nombre + "';";
 
         try {
@@ -52,7 +54,7 @@ public class Metodos {
             ResultSet rs = stmt.executeQuery(QUERY);
 
             while (rs.next()) {
-                System.out.println("El juego existe");
+                System.out.println("Datos de busqueda");
                 System.out.println("id: " + rs.getInt("id"));
                 System.out.println("Nombre: " + rs.getString("Nombre"));
                 System.out.println("Genero: " + rs.getString("Genero"));
@@ -71,7 +73,71 @@ public class Metodos {
         System.out.println("El juego no existe ");
         return false;
     }
+    
+    public void lanzaConsulta (String consulta) throws SQLException {
+//        String QUERY = "SELECT * FROM  videojuegos where nombre = '" + nombre + "';";
+            
+        try {
+            Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(consulta);
 
+            while (rs.next()) {
+                System.out.println("Resultado de consulta:");
+                System.out.println("id: " + rs.getInt("id"));
+                System.out.println("Nombre: " + rs.getString("Nombre"));
+                System.out.println("Genero: " + rs.getString("Genero"));
+                System.out.println("Fecha de lanzamiento: " + rs.getDate("FechaLanzamiento"));
+                System.out.println("Compañia: " + rs.getString("Compañia"));
+                System.out.println("Precio: " + rs.getFloat("Precio"));
+                System.out.println("-------------------------------------------");
+            
+            }
+
+            stmt.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+ 
+      
+    }
+    
+    public void eliminarRegistro (int eliminar) throws SQLException {
+//        String QUERY = "SELECT * FROM  videojuegos where nombre = '" + nombre + "';";
+        String QUERY = "DELETE  FROM  videojuegos where id = '" + eliminar + "';";
+            
+        try {
+            Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            Statement stmt = conn.createStatement();
+//            stmt.executeQuery(QUERY);
+            stmt.executeUpdate(QUERY);
+            
+            System.out.println("JUEGO ELIMINADO CON EXITO");
+
+//            while (rs.next()) {
+//                System.out.println("Resultado de consulta:");
+//                System.out.println("id: " + rs.getInt("id"));
+//                System.out.println("Nombre: " + rs.getString("Nombre"));
+//                System.out.println("Genero: " + rs.getString("Genero"));
+//                System.out.println("Fecha de lanzamiento: " + rs.getDate("FechaLanzamiento"));
+//                System.out.println("Compañia: " + rs.getString("Compañia"));
+//                System.out.println("Precio: " + rs.getFloat("Precio"));
+//                System.out.println("-------------------------------------------");
+//            
+//            }
+
+            stmt.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+ 
+      
+    }
+
+
+       
     public videojuego datosJuego(videojuego newGame) throws ParseException {
 
         Scanner sc = new Scanner(System.in);
@@ -99,25 +165,38 @@ public class Metodos {
 //        Date fechaLanzamiento = dateFormat.parse(FechaLanzamiento);
 //        newGame.setFechaLanzamiento(fechaLanzamiento);
         // </editor-fold>
-        System.out.print("Introduce la fecha de lanzamiento yyyy-MM-dd");
+//        System.out.print("Introduce la fecha de lanzamiento yyyy-MM-dd: ");
+//        FechaLanzamiento = sc.nextLine();
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//        Date fechaLanzamiento = dateFormat.parse(FechaLanzamiento);
+//        java.sql.Date sqlFechaLanzamiento = new java.sql.Date(fechaLanzamiento.getTime());
+//        newGame.setFechaLanzamiento(sqlFechaLanzamiento);
+
+        System.out.print("Introduce la fecha de lanzamiento dd-MM-yyyy: ");
         FechaLanzamiento = sc.nextLine();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date fechaLanzamiento = dateFormat.parse(FechaLanzamiento);
+
+        SimpleDateFormat dateFormatInput = new SimpleDateFormat("dd-MM-yyyy");
+        Date fechaLanzamiento = dateFormatInput.parse(FechaLanzamiento);
+
+        SimpleDateFormat dateFormatOutput = new SimpleDateFormat("yyyy-MM-dd");
         java.sql.Date sqlFechaLanzamiento = new java.sql.Date(fechaLanzamiento.getTime());
+
         newGame.setFechaLanzamiento(sqlFechaLanzamiento);
         System.out.println("-------------------------------");
-        // </editor-fold>
-        System.out.print("Introduce el precio: ");
+                System.out.print("Introduce el precio: ");
         Precio = sc.nextDouble();
         newGame.setPrecio(Precio);
 
         return newGame;
-    }
-
+        
+        }
+        
     public void Insert() throws ParseException {
         videojuego ng = new videojuego();
         datosJuego(ng);
-//        String insert=" INSERT INTO `videojuegos`( `Nombre`, `Genero`, `FechaLanzamiento`, `Compañia`, `Precio`)" +
+        
+        // <editor-fold defaultstate="collapsed" desc="-Definición-">
+        //        String insert=" INSERT INTO `videojuegos`( `Nombre`, `Genero`, `FechaLanzamiento`, `Compañia`, `Precio`)" +
 //         "VALUES ('[+value-2]','[value-3]','[value-4]','[value-5]','[value-6]')'";
 
 //         String insert=" INSERT INTO `videojuegos`( `"+ng.getNombre()+"`, `Genero`, `FechaLanzamiento`, `Compañia`, `Precio`)" +
@@ -127,6 +206,9 @@ public class Metodos {
 //         ng.getFechaLanzamiento();
 //         ng.getCompañia();
 //         ng.getPrecio();
+        // </editor-fold>
+        
+
         String insert = "INSERT INTO `videojuegos`(`Nombre`, `Genero`, `FechaLanzamiento`, `Compañia`, `Precio`) "
                 + "VALUES ('" + ng.getNombre() + "','" + ng.getGenero() + "','" + ng.getFechaLanzamiento() + "','"
                 + ng.getCompañia() + "'," + ng.getPrecio() + ")";
@@ -136,7 +218,8 @@ public class Metodos {
             Statement stmt = conn.createStatement();
             stmt.executeUpdate(insert);
             
-//            while(rs.next()){
+            // <editor-fold defaultstate="collapsed" desc="-Definición-">
+            //            while(rs.next()){
 //            System.out.println("id: "+rs.getInt("id"));
 //            System.out.println("Nombre: "+rs.getString("Nombre"));
 //            System.out.println("Genero: "+rs.getString("Genero"));
@@ -145,6 +228,10 @@ public class Metodos {
 //            System.out.println("Precio: "+rs.getFloat("Precio"));
 //            System.out.println("-------------------------------------------");
 //            }
+            // </editor-fold>
+            
+            
+
             stmt.close();
 //            
         } catch (SQLException e) {
@@ -152,8 +239,12 @@ public class Metodos {
         }
 
     }
-    
-     public void Insert_param(String nombre,String genero, Date fechaLanzamiento, String Compañia, int Precio) throws ParseException {
+ 
+        
+    public void Insert_param(String nombre,String genero, Date fechaLanzamiento, String Compañia, int Precio) throws ParseException {
+
+
+// <editor-fold defaultstate="collapsed" desc="-Definición-">
 //        videojuego ng = new videojuego();
 //        datosJuego(ng);
 //        String insert=" INSERT INTO `videojuegos`( `Nombre`, `Genero`, `FechaLanzamiento`, `Compañia`, `Precio`)" +
@@ -166,6 +257,8 @@ public class Metodos {
 //         ng.getFechaLanzamiento();
 //         ng.getCompañia();
 //         ng.getPrecio();
+// </editor-fold>
+
         String insert = "INSERT INTO `videojuegos`(`Nombre`, `Genero`, `FechaLanzamiento`, `Compañia`, `Precio`) "
                 + "VALUES ('" + nombre + "','" + genero + "','" + fechaLanzamiento + "','"
                 + Compañia + "'," + Precio+ ")";
