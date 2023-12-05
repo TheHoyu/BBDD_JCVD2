@@ -28,18 +28,7 @@ public class Conexion {
         }
     }
 
-    // Método para realizar operaciones en la base de datos (si es necesario)
-    public void realizarOperaciones() throws SQLException {
-        try {
-            Statement statement = connection.createStatement();
-            // statement.execute(QUERY); // Realiza alguna operación con la base de datos
 
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            // Manejar la excepción o relanzarla según tus necesidades
-            throw ex;
-        }
-    }
 
     // Método para cerrar la conexión
     public void cerrarConexion() {

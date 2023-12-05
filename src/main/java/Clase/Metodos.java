@@ -9,22 +9,33 @@ import java.util.Date;
 
 /**
  *
- * @author Hoyu
+ * Clase donde generamos los métodos para interactuar con la bbdd 
  */
 public class Metodos {
-
+    /*
+    Parámetros de conexión a la bbdd 
+    */
     static final String DB_URL = "jdbc:mysql://localhost:3306/jcvd";
     static final String USER = "GM";
     static final String PASS = "1234";
 
+    /*
+    Método para mostrar todo el contenido de la tabla 
+    */
+    
     public void mostrar() throws SQLException {
-        String QUERY = "SELECT * FROM videojuegos";
+        String QUERY = "SELECT * FROM videojuegos"; // consulta 
 
-        try {
+        try { // Objeto  sql connection, queusa losparámatros static final ,para acceder 
             Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(QUERY);
+            Statement stmt = conn.createStatement(); // sentencia que derivará en Resultset  
+            ResultSet rs = stmt.executeQuery(QUERY); // resulset que usa , la sencia, y la query 
 
+            /*
+            bucle que nos muestra el contenido de la consulta, va extrayendo los métodos 
+            get int para sacar numeros enteros, string para los strings, y para sacar fecha
+            */
+            
             while (rs.next()) {
                 System.out.println("id: " + rs.getInt("id"));
                 System.out.println("Nombre: " + rs.getString("Nombre"));
@@ -43,16 +54,23 @@ public class Metodos {
 
     }
     
-    
+    /*
+    metodo que busca nombre  en la bbdd con parámetro  de entrada 
+    */
 
     public boolean buscaNombre(String nombre) throws SQLException {
         String QUERY = "SELECT * FROM  videojuegos where nombre = '" + nombre + "';";
 
-        try {
+        try { // Objeto  sql connection, queusa losparámatros static final ,para acceder 
             Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(QUERY);
+            Statement stmt = conn.createStatement(); // sentencia que derivará en Resultset  
+            ResultSet rs = stmt.executeQuery(QUERY); // resulset que usa , la sencia, y la query 
 
+                 /*
+            bucle que nos muestra el contenido de la consulta, va extrayendo los métodos 
+            get int para sacar numeros enteros, string para los strings, y para sacar fecha
+            */
+            
             while (rs.next()) {
                 System.out.println("Datos de busqueda");
                 System.out.println("id: " + rs.getInt("id"));
@@ -74,13 +92,22 @@ public class Metodos {
         return false;
     }
     
+    /*
+    Metodo que lanza consulta por parámetros 
+    */
+    
     public void lanzaConsulta (String consulta) throws SQLException {
 //        String QUERY = "SELECT * FROM  videojuegos where nombre = '" + nombre + "';";
             
-        try {
+        try { // Objeto  sql connection, queusa losparámatros static final ,para acceder 
             Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(consulta);
+            Statement stmt = conn.createStatement(); // sentencia que derivará en Resultset  
+            ResultSet rs = stmt.executeQuery(consulta); // resulset que usa , la sencia, y la query 
+
+                 /*
+            bucle que nos muestra el contenido de la consulta, va extrayendo los métodos 
+            get int para sacar numeros enteros, string para los strings, y para sacar fecha
+            */
 
             while (rs.next()) {
                 System.out.println("Resultado de consulta:");
@@ -103,15 +130,20 @@ public class Metodos {
       
     }
     
+    
+    /*
+    Metodo que eliminar registro por parámetro 
+    */
+    
     public void eliminarRegistro (int eliminar) throws SQLException {
 //        String QUERY = "SELECT * FROM  videojuegos where nombre = '" + nombre + "';";
         String QUERY = "DELETE  FROM  videojuegos where id = '" + eliminar + "';";
             
         try {
-            Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
-            Statement stmt = conn.createStatement();
+            Connection conn = DriverManager.getConnection(DB_URL, USER, PASS); // Objeto  sql connection, queusa losparámatros static final ,para acceder 
+            Statement stmt = conn.createStatement();// sentencia que derivará en Resultset  
 //            stmt.executeQuery(QUERY);
-            stmt.executeUpdate(QUERY);
+            stmt.executeUpdate(QUERY);// aque en lugar de usar un result, ejecutamos el update de la bbdd 
             
             System.out.println("JUEGO ELIMINADO CON EXITO");
 
@@ -136,13 +168,16 @@ public class Metodos {
       
     }
 
-
+    /*
+    Método que pide los datos de juego por teclado, y nos genera un objeto videojuegos 
+    */
        
     public videojuego datosJuego(videojuego newGame) throws ParseException {
-
-        Scanner sc = new Scanner(System.in);
-        String Nombre, Genero, Compañia, FechaLanzamiento;
-        double Precio;
+        
+        Scanner sc = new Scanner(System.in); // generamos el scanner 
+        String Nombre, Genero, Compañia, FechaLanzamiento; // instanciamos las variables 
+        double Precio; 
+        
         System.out.println("Introduce Los datos del juego: ");
         System.out.println("-------------------------------");
         System.out.print("Introduce nombre del juego : ");
