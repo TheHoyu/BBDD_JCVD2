@@ -181,15 +181,15 @@ public class Metodos {
         System.out.println("Introduce Los datos del juego: ");
         System.out.println("-------------------------------");
         System.out.print("Introduce nombre del juego : ");
-        Nombre = sc.nextLine();
+        Nombre = sc.nextLine();  // asociamos la variable - al scanner 
         newGame.setNombre(Nombre);
         System.out.println("-------------------------------");
         System.out.print("Introduce Genero del juego : ");
-        Genero = sc.nextLine();
+        Genero = sc.nextLine();  // asociamos la variable - al scanner 
         newGame.setGenero(Genero);
         System.out.println("-------------------------------");
         System.out.print("Introduce la Compañia: ");
-        Compañia = sc.nextLine();
+        Compañia = sc.nextLine();  // asociamos la variable - al scanner 
         newGame.setCompañia(Compañia);
         System.out.println("-------------------------------");
 
@@ -207,15 +207,20 @@ public class Metodos {
 //        java.sql.Date sqlFechaLanzamiento = new java.sql.Date(fechaLanzamiento.getTime());
 //        newGame.setFechaLanzamiento(sqlFechaLanzamiento);
 
-        System.out.print("Introduce la fecha de lanzamiento dd-MM-yyyy: ");
-        FechaLanzamiento = sc.nextLine();
+        /*
+            no nos vamos a engañar, en el tema de la fecha, he usado gpt 
+        */
 
+        System.out.print("Introduce la fecha de lanzamiento dd-MM-yyyy: ");
+        FechaLanzamiento = sc.nextLine();  // asociamos la variable - al scanner 
+        // le damos a la fecha el formato que queremos 
         SimpleDateFormat dateFormatInput = new SimpleDateFormat("dd-MM-yyyy");
         Date fechaLanzamiento = dateFormatInput.parse(FechaLanzamiento);
 
         SimpleDateFormat dateFormatOutput = new SimpleDateFormat("yyyy-MM-dd");
         java.sql.Date sqlFechaLanzamiento = new java.sql.Date(fechaLanzamiento.getTime());
-
+        // usamos java.sql.Date para que el programa lo reconozca coomo fecha 
+        
         newGame.setFechaLanzamiento(sqlFechaLanzamiento);
         System.out.println("-------------------------------");
                 System.out.print("Introduce el precio: ");
@@ -226,10 +231,17 @@ public class Metodos {
         
         }
         
+    /*
+    Metodo que inserta un juego, por teclado,
+    usamos el metodo datos juego para generar el juego, con los datos 
+    */
+    
+    
     public void Insert() throws ParseException {
-        videojuego ng = new videojuego();
-        datosJuego(ng);
+        videojuego ng = new videojuego(); // instanciamos un videojuego nuevo 
+        datosJuego(ng); // al juego nuevo le damos datos 
         
+        // Intentos de consultas parametrizadas 
         // <editor-fold defaultstate="collapsed" desc="-Definición-">
         //        String insert=" INSERT INTO `videojuegos`( `Nombre`, `Genero`, `FechaLanzamiento`, `Compañia`, `Precio`)" +
 //         "VALUES ('[+value-2]','[value-3]','[value-4]','[value-5]','[value-6]')'";
@@ -243,15 +255,15 @@ public class Metodos {
 //         ng.getPrecio();
         // </editor-fold>
         
-
+        // insert que coge los datos del juego nuevo generado ,con sus datos 
         String insert = "INSERT INTO `videojuegos`(`Nombre`, `Genero`, `FechaLanzamiento`, `Compañia`, `Precio`) "
                 + "VALUES ('" + ng.getNombre() + "','" + ng.getGenero() + "','" + ng.getFechaLanzamiento() + "','"
                 + ng.getCompañia() + "'," + ng.getPrecio() + ")";
 
         try {
-            Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
-            Statement stmt = conn.createStatement();
-            stmt.executeUpdate(insert);
+            Connection conn = DriverManager.getConnection(DB_URL, USER, PASS); // Objeto  sql connection, queusa losparámatros static final ,para acceder 
+            Statement stmt = conn.createStatement();// sentencia que derivará en Resultset  
+            stmt.executeUpdate(insert); // en lugar de result, es un update 
             
             // <editor-fold defaultstate="collapsed" desc="-Definición-">
             //            while(rs.next()){
@@ -274,7 +286,10 @@ public class Metodos {
         }
 
     }
- 
+    /*
+    metodo con el que insertamos el videojuego por parámetro 
+    en lugar de general el juego, lo damos nosotrs escribiendolo a traves del programa ( en el main ) 
+    */
         
     public void Insert_param(String nombre,String genero, Date fechaLanzamiento, String Compañia, int Precio) throws ParseException {
 
@@ -299,9 +314,9 @@ public class Metodos {
                 + Compañia + "'," + Precio+ ")";
 
         try {
-            Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
-            Statement stmt = conn.createStatement();
-            stmt.executeUpdate(insert);
+            Connection conn = DriverManager.getConnection(DB_URL, USER, PASS); // Objeto  sql connection, queusa losparámatros static final ,para acceder 
+            Statement stmt = conn.createStatement();// sentencia que derivará en Resultset  
+            stmt.executeUpdate(insert); // en lugar de un result, es un insert 
             
 //            while(rs.next()){
 //            System.out.println("id: "+rs.getInt("id"));
