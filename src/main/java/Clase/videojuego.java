@@ -4,8 +4,8 @@ package Clase;
 import java.sql.Date;
 
 /**
- *
- * @author Hoyu
+ * Clase del objeto videojuego ,para trabajar con  ella  en el proyecto 
+ * 
  */
 public class videojuego {
     
