@@ -1,6 +1,6 @@
 
 
-package xml_jakarta.conexionbd_jorgejara;
+package conexionMain;
 
 import Clase.Metodos;
 import Clase.videojuego;
